@@ -2,9 +2,9 @@
 
 using namespace std;
 
-#define EP 0.001
+#define ep_s 0.0001
 
-class Solution {
+class Bisection {
 
     private:
 
@@ -34,30 +34,43 @@ class Solution {
 
         cout << "low: " << low << "   up: " << up << endl;
 
-        double root;
+        double root = (low+up) / 2;
+        double prev_root = root;
 
         int iteration = 1;
 
-        while((up - low) >= EP) {
+        while(true) {
 
+            double calc = function(root) * function(low);
+
+            if(calc > 0.0) low = root;
+            else if(calc < 0.0) up = root;
+            else break;
+            
             root = (low+up) / 2;
-            if(function(root) == 0.0) break;
-            else if(function(root) * function(low) <= 0.0) up = root;
-            else low = root;
 
-            cout << "root at iteration " << iteration++ << " : " << root << endl; 
+            double ep_a = abs((root - prev_root) / root);
+
+            if(ep_a < ep_s) break;
+
+            prev_root = root;
+
+            cout << "root at iteration " << iteration++ << " : " << root << endl;
+            cout << "a = " << low << "    b = " << up << endl;
         }
 
 
         cout << "the root is: " << root << endl;
+        cout << "Total number of iterations : " << iteration << endl;
+
     }
 };
 
 int main() {
 
-    Solution sol = Solution();
+    Bisection bisect = Bisection();
 
-    sol.solve();
+    bisect.solve();
 
     return 0;
 }
