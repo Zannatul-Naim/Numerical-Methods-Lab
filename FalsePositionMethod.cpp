@@ -6,7 +6,7 @@ class Falsi {
 
     private:
 
-    double ep = 0.001;
+    double ep_s = 0.0001;
     double a, b;
     
     double function(double x) {
@@ -33,21 +33,30 @@ class Falsi {
 
         double prev;
 
-        root = a - (function(a) * (b - a)) / (function(b) - function(a));
+        // root = a - (function(a) * (b - a)) / (function(b) - function(a));
+        root = (b*function(a) - a*function(b)) / (function(a) - function(b));
+
         prev = root;
 
         int iteration = 1;
 
-        while((b-a) > ep) {
+        while(true) {
 
             cout << "root at iteration " << iteration++ << " : " << root << endl; 
 
-            if(function(root)*function(a) < 0.0) b = root;
-            else if(function(root) == 0.0) break;
-            else a = root;
-            root = a - (function(a) * (b - a)) / (function(b) - function(a));
+            double calc = function(root) * function(a);
+
+            if(calc < 0.0) b = root;
+            else if(calc > 0.0) a = root;
+            else break;
+
+            // root = a - (function(a) * (b - a)) / (function(b) - function(a));
+            root = (b*function(a) - a*function(b)) / (function(a) - function(b));
+
             
-            if(abs(prev - root) < 0.00001) break;
+            double ep_a = abs((prev - root) / root);
+
+            if(ep_a < ep_s) break;
 
             prev = root;
 
@@ -59,9 +68,9 @@ class Falsi {
 
 int main() {
 
-    Falsi fpos = Falsi();
+    Falsi false_position = Falsi();
 
-    fpos.solve();
+    false_position.solve();
     
     return 0;
 }
