@@ -17,10 +17,16 @@ public:
         return (3*x*x + 2*x);
     }
 
-    void solve(double x) {
+    void solve() {
+        
+        srand(int(time(0)));
 
-        double prev_root = x; // prev_root = x0
+        double prev_root;
 
+        while(true) {
+            prev_root = -9 + rand()%10;
+            if(df(prev_root) != 0) break;
+        }
         double root;
 
         int step = 0;
@@ -29,6 +35,7 @@ public:
 
             double fx = f(prev_root);
             double dfx = df(prev_root);
+
             root = prev_root - (fx / dfx);  // finding the new root
 
             if(f(root) == 0.0) break;
@@ -61,7 +68,7 @@ int main() {
 
     Newton_Raphson newton_raphson = Newton_Raphson();
 
-    newton_raphson.solve(x);
+    newton_raphson.solve();
 
     return 0;
 
