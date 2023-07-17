@@ -6,11 +6,18 @@ class Falsi {
 
     private:
 
-    double ep_s = 0.0001;
-    double a, b;
+    double tolerence = 0.0001;
     
+    // double function(double x) {
+    //     return (x*x*x + x*x - 1);
+    // }
     double function(double x) {
-        return (x*x*x + x*x - 1);
+
+        return (x*x*exp(-(x/2)) - 1);
+    }
+
+    double falsi(double a, double b) {
+        return (b*function(a) - a*function(b)) / (function(a) - function(b));
     }
 
     public:
@@ -18,7 +25,8 @@ class Falsi {
     double root;
 
     void solve() {
-
+        
+        double a, b;
         srand(int(time(0)));
 
         while(true) {
@@ -29,36 +37,23 @@ class Falsi {
             if(function(a) * function(b) < 0.0) break;
         }
 
-        if(a > b) swap(a, b);
-
-        double prev;
-
-        // root = a - (function(a) * (b - a)) / (function(b) - function(a));
-        root = (b*function(a) - a*function(b)) / (function(a) - function(b));
-
-        prev = root;
 
         int iteration = 1;
 
         while(true) {
 
+            root = falsi(a, b);
+
             cout << "root at iteration " << iteration++ << " : " << root << endl; 
 
-            double calc = function(root) * function(a);
+            if(function(root) == 0.0) break;
 
-            if(calc < 0.0) b = root;
-            else if(calc > 0.0) a = root;
-            else break;
+            if(function(root) * function(a) < 0.0) b = root;
+            else a = root;
 
-            // root = a - (function(a) * (b - a)) / (function(b) - function(a));
-            root = (b*function(a) - a*function(b)) / (function(a) - function(b));
+            double ep_a = abs((falsi(a, b) - root) / root);  // finding absolute relative error
 
-            
-            double ep_a = abs((prev - root) / root);
-
-            if(ep_a < ep_s) break;
-
-            prev = root;
+            if(ep_a < tolerence) break;
 
         }
 
