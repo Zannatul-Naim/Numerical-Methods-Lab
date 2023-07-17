@@ -6,41 +6,48 @@ class Simpson {
 
     public:
 
+    double a, b, n, h;
+
+    Simpson() {
+
+        cout << "Enter lower limit: ";
+        cin >> a;
+        cout << "Enter upper limit: ";
+        cin >> b;
+        cout << "Enter value of n: ";
+        cin >> n; 
+    }
+
+    // double function(double x) {
+    //     return (1 / (1 + pow(x, 2)));
+    // }
+    // double function(double x) {
+    //     return (1 / (1 + x));
+    // }
     double function(double x) {
-        return (1 / (1 + pow(x, 2)));
+        return (sqrt(x*x + 1));
     }
 
     void solve() {
 
-        double l, u, n, h;
+        h = (b-a) / n;
 
-        cout << "Enter lower limit: ";
-        cin >> l;
-        cout << "Enter upper limit: ";
-        cin >> u;
+        double i_val = function(a);
 
-        cout << "Enter sub-interval: ";
-        cin >> n;
-
-        // step size 
-        h = (u-l) / n;
-
-        // integration
-        double i = function(l);  // integration -> i;
-
-        for(int j = 1; j < n; j++) {
-            double k = l + j*h;   // k = l + j*h; -> xi = a + i*del(x);
-            if(j%2 == 0) {
-                i = i + 2 * function(k);
+        for(int i = 1; i < n; i++) {
+            double x = a + i*h;
+            if(i % 2 == 0) {
+                i_val += 2*function(x);
             } else {
-                i = i + 4 * function(k);
+                i_val += 4*function(x);
             }
         }
 
-        i = i + function(u);
-        i = i * h/3;
+        i_val += function(b);
 
-        cout<< endl << "Required value of integration is: " << i << endl << endl;
+        i_val = (i_val * h) / 3;
+
+        cout<< endl << "Required value of integration is: " << i_val << endl << endl;
 
     }
         
