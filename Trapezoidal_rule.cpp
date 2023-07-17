@@ -6,37 +6,44 @@ class Trapezoidal {
 
     public:
 
+    // double function(double x) {
+    //     return (1 / (1 + pow(x, 2)));
+    // }
+
     double function(double x) {
-        return (1 / (1 + pow(x, 2)));
+        return (sqrt(x*x + 1));
+    }
+    
+    double a, b, n, h;
+
+    Trapezoidal() {
+
+        cout << "Enter lower limit: ";
+        cin >> a;
+        cout << "Enter upper limit: ";
+        cin >> b;
+
+        cout << "Enter sub-interval: ";
+        cin >> n;
     }
 
     void solve() {
 
-        double l, u, n, h;
+    // step size
+    h = (b-a) / n;
 
-        cout << "Enter lower limit: ";
-        cin >> l;
-        cout << "Enter upper limit: ";
-        cin >> u;
+    // integrated value
+    double i_val = function(a);
+    for(int i = 1; i < n; i++) {
+        double x = a + i*h;
+        i_val += 2*function(x);
+    }
 
-        cout << "Enter sub-interval: ";
-        cin >> n;
+    i_val += function(b);
 
-        // step size 
-        h = (u-l) / n;
+    i_val = (i_val * h) / 2;
 
-        // integration
-        double i = function(l);  // integration -> i;
-
-        for(int j = 1; j < n; j++) {
-            double k = l + j*h;   // k = l + j*h; -> xi = a + i*del(x);
-            i = i + 2 * function(k);
-        }
-
-        i = i + function(u);
-        i = i * h/2;
-
-        cout<< endl << "Required value of integration is: " << i;
+    cout<< endl << "Required value of integration is: " << i_val;
 
     }
         
